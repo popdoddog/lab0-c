@@ -24,11 +24,35 @@ struct list_head *q_new()
 }
 
 /* Free all storage used by queue */
-void q_free(struct list_head *head) {}
+void q_free(struct list_head *head)
+{
+    return;
+}
+
+/* Create a new element with the string */
+element_t static inline *new_element(char *s)
+{
+    element_t *new = (element_t *) malloc(sizeof(element_t));
+    if (!new)
+        return NULL;
+    new->value = strdup(s);
+    if (!new->value) {
+        free(new);
+        return NULL;
+    }
+    return new;
+}
 
 /* Insert an element at head of queue */
 bool q_insert_head(struct list_head *head, char *s)
 {
+    if (!head)
+        return false;
+    element_t *new = new_element(s);
+    if (!new) {
+        return false;
+    }
+    list_add(&(new->list), head);
     return true;
 }
 
